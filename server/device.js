@@ -1,32 +1,30 @@
-class DeviceController{
+const {Tovar} = require('./models')
+
+class DeviceController {
+    async create(req, res) {
+        try {
+            let {tovar, tovar123} = req.body
+            const tovars = await Tovar.create({tovar, tovar123});
+            return res.json(tovars)
+        } catch (e) {
+            console.log(e)
+        }
+
+    }
 
     async getAll(req, res) {
-        let {id_tovar, tovar, tovar123} = req.query
-        let devices;
-        if (!brandId && !typeId) {
-            devices = await Device.findAndCountAll({limit, offset})
-        }
-        if (brandId && !typeId) {
-            devices = await Device.findAndCountAll({where:{brandId}, limit, offset})
-        }
-        if (!brandId && typeId) {
-            devices = await Device.findAndCountAll({where:{typeId}, limit, offset})
-        }
-        if (brandId && typeId) {
-            devices = await Device.findAndCountAll({where:{typeId, brandId}, limit, offset})
-        }
-        return res.json(devices)
+        let tovars = await Tovar.findAll()
+        return res.json(tovars)
     }
 
     async getOne(req, res) {
-        const {id} = req.params
-        const device = await Device.findOne(
+        const id_tovar = req.params
+        const tovars = await Tovar.findOne(
             {
-                where: {id},
-                include: [{model: DeviceInfo, as: 'info'}]
-            },
+                where: id_tovar
+            }
         )
-        return res.json(device)
+        return res.json(tovars)
     }
 }
 
